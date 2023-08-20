@@ -8,7 +8,6 @@ const { MongoClient } = require("mongodb");
 // Replace the uri string with your connection string.
 const uri = "mongodb+srv://julianavanier:n5Wp1RhEFe7yNWFw@cluster0.vrbwnc0.mongodb.net/?retryWrites=true&w=majority";
 
-
 // parse application/json
 app.use(bodyParser.json())
 
@@ -28,7 +27,7 @@ async function run() {
     // const query = { name: 'Peter' };
     //   const result = await student.insertOne(req.params);
     // const result = await student.insertOne(req.body, {$set:{"age":100}});
-    const result = await student.insertOne({name: "Juliana",age:"100"});
+    const result = await student.insertOne({name: "Test",age:"1000"});
     // const result = await student.findOne({name:"Peter"});
 
     console.log("TITULO", result);
