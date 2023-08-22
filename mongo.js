@@ -1,54 +1,61 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require("express");
+const app = express();
+const port = 3000;
 
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 
 const { MongoClient } = require("mongodb");
 // Replace the uri string with your connection string.
-const uri = "mongodb+srv://julianavanier:n5Wp1RhEFe7yNWFw@cluster0.vrbwnc0.mongodb.net/?retryWrites=true&w=majority";
+const uri =
+  "mongodb+srv://julianavanier:n5Wp1RhEFe7yNWFw@cluster0.vrbwnc0.mongodb.net/?retryWrites=true&w=majority";
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 // app.get('/users/:userId/books/:bookId', (req, res) => {
-app.get('/', (req, res) => {
+app.get("/pizza", (req, res) => {
   const client = new MongoClient(uri);
+  // res.write("AQUI");
+  async function run() {
+    try {
+      // const database = client.db('mongodemo');
+      const database = client.db("orderpizza");
+      // const student = database.collection('student');
+      const pizza = database.collection("pizza");
 
-async function run() {
+      // Query for a movie that has the title 'Back to the Future'
+      // const query = { name: 'Peter' };
+      //   const result = await student.insertOne(req.params);
+      // const result = await student.insertOne(req.body, {$set:{"age":100}});
+      // const result = await student.insertOne({name: "Test",age:"1000"});
+      // const result = await student.findOne({name:"Peter"});
+      const result = await pizza.find({}).toArray();
+      //  const result = await pizza.findOne({title:"Pepperoni Pizza"});
 
-
-  try {
-
-    const database = client.db('mongodemo');
-    const student = database.collection('student');
-
-    // Query for a movie that has the title 'Back to the Future'
-    // const query = { name: 'Peter' };
-    //   const result = await student.insertOne(req.params);
-    // const result = await student.insertOne(req.body, {$set:{"age":100}});
-    const result = await student.insertOne({name: "Test",age:"1000"});
-    // const result = await student.findOne({name:"Peter"});
-
-    console.log("TITULO", result);
-    res.write(JSON.stringify(result));
-    res.send(req.params)
+      console.log("RESULT", result);
+      res.json(result);
+    } catch (err) {
+      // res.write(err);
+      console.log("ERRO AQUI", err);
+      // print ("Admin user already created");
+      // db.auth("admin","paddowrd");
+    } finally {
+      // Ensures that the client will close when you finish/error
+      await client.close();
+    }
   }
-  catch (err) {
-    // res.write(err);
-    console.log("ERRO AQUI", err);
-    // print ("Admin user already created");
-    // db.auth("admin","paddowrd");
-
-
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+  run().catch(console.dir);
   // res.send(req.params)
-})
+});
 
 // app.post('/', (req, res) => {
 
@@ -77,7 +84,5 @@ run().catch(console.dir);
 // })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
-
+  console.log(`Example app listening on port ${port}`);
+});
