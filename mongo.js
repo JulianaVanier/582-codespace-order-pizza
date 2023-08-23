@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 // });
 
 // app.get('/users/:userId/books/:bookId', (req, res) => {
-app.get("/pizza", (req, res) => {
+app.get("/", (req, res) => {
   const client = new MongoClient(uri);
   // res.write("AQUI");
   async function run() {
