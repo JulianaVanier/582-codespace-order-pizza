@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+var cors = require("cors");
+app.use(cors());
+
 const bodyParser = require("body-parser");
 
 const { MongoClient } = require("mongodb");
@@ -12,14 +15,14 @@ const uri =
 // parse application/json
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 
 // app.get('/users/:userId/books/:bookId', (req, res) => {
 app.get("/pizza", (req, res) => {
