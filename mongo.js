@@ -24,8 +24,7 @@ app.use(bodyParser.json());
 //   next();
 // });
 
-// app.get('/users/:userId/books/:bookId', (req, res) => {
-app.get("/", (req, res) => {
+app.get("/pizza", (req, res) => {
   const client = new MongoClient(uri);
   // res.write("AQUI");
   async function run() {
@@ -42,6 +41,40 @@ app.get("/", (req, res) => {
       // const result = await student.insertOne({name: "Test",age:"1000"});
       // const result = await student.findOne({name:"Peter"});
       const result = await pizza.find({}).toArray();
+      //  const result = await pizza.findOne({title:"Pepperoni Pizza"});
+
+      console.log("RESULT", result);
+      res.json(result);
+    } catch (err) {
+      // res.write(err);
+      console.log("ERRO AQUI", err);
+      // print ("Admin user already created");
+      // db.auth("admin","paddowrd");
+    } finally {
+      // Ensures that the client will close when you finish/error
+      await client.close();
+    }
+  }
+  run().catch(console.dir);
+  // res.send(req.params)
+});
+
+app.get("/ingredient", (req, res) => {
+  const client = new MongoClient(uri);
+  async function run() {
+    try {
+      // const database = client.db('mongodemo');
+      const database = client.db("orderpizza");
+      // const student = database.collection('student');
+      const ingredient = database.collection("ingredient");
+
+      // Query for a movie that has the title 'Back to the Future'
+      // const query = { name: 'Peter' };
+      //   const result = await student.insertOne(req.params);
+      // const result = await student.insertOne(req.body, {$set:{"age":100}});
+      // const result = await student.insertOne({name: "Test",age:"1000"});
+      // const result = await student.findOne({name:"Peter"});
+      const result = await ingredient.find({}).toArray();
       //  const result = await pizza.findOne({title:"Pepperoni Pizza"});
 
       console.log("RESULT", result);
