@@ -59,7 +59,7 @@ app.get("/pizza", (req, res) => {
   // res.send(req.params)
 });
 
-app.get("/ingredient", (req, res) => {
+app.get("/customizepizza", (req, res) => {
   const client = new MongoClient(uri);
   async function run() {
     try {
