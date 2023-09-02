@@ -65,33 +65,22 @@ app.get("/pizza", (req, res) => {
   // res.send(req.params)
 });
 
-app.get("/customizepizza", (req, res) => {
+
+
+app.get("/previeworder", (req, res) => {
   const client = new MongoClient(uri);
   async function run() {
     try {
-      // const database = client.db('mongodemo');
       const database = client.db("orderpizza");
-      // const student = database.collection('student');
-      const ingredient = database.collection("ingredient");
+      const order = database.collection("order");
+      const result = await order.find({}).toArray();
 
-      // Query for a movie that has the title 'Back to the Future'
-      // const query = { name: 'Peter' };
-      //   const result = await student.insertOne(req.params);
-      // const result = await student.insertOne(req.body, {$set:{"age":100}});
-      // const result = await student.insertOne({name: "Test",age:"1000"});
-      // const result = await student.findOne({name:"Peter"});
-      const result = await ingredient.find({}).toArray();
-      //  const result = await pizza.findOne({title:"Pepperoni Pizza"});
 
       console.log("RESULT", result);
       res.json(result);
     } catch (err) {
-      // res.write(err);
       console.log("ERRO AQUI", err);
-      // print ("Admin user already created");
-      // db.auth("admin","paddowrd");
     } finally {
-      // Ensures that the client will close when you finish/error
       await client.close();
     }
   }
@@ -99,31 +88,6 @@ app.get("/customizepizza", (req, res) => {
   // res.send(req.params)
 });
 
-// app.post('/', (req, res) => {
-
-//     console.log(req.body);
-
-//     const client = new MongoClient(uri);
-
-//     async function run() {
-//       try {
-//         const database = client.db('mongodemo');
-//         const student = database.collection('student');
-
-//         // Query for a movie that has the title 'Back to the Future'
-//         // const query = { name: 'Peter' };
-//         const result = await student.insertOne(req.params);
-
-//         console.log(result);
-//       } finally {
-//         // Ensures that the client will close when you finish/error
-//         await client.close();
-//       }
-//     }
-//     run().catch(console.dir);
-
-//   res.send('Hello World!')
-// })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
