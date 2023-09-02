@@ -15,14 +15,20 @@ const uri =
 // parse application/json
 app.use(bodyParser.json());
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   next();
-// });
+app.post("/placeorder", (req, res) => {
+  const client = new MongoClient(uri);
+  async function run() {
+      try {
+      const database = client.db("orderpizza");
+      const order = database.collection("order");
+      const result = await order.insertOne( req.body );
+      res.send(result)
+    } finally {
+      await client.close();
+    }
+  }
+  run().catch(console.dir);
+});
 
 app.get("/pizza", (req, res) => {
   const client = new MongoClient(uri);
