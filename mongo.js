@@ -67,13 +67,17 @@ app.get("/pizza", (req, res) => {
 
 
 
-app.get("/previeworder", (req, res) => {
+app.get("/previeworder/:id", (req, res) => {
   const client = new MongoClient(uri);
   async function run() {
+    console.log("titulooooooooooooo",typeof req.params.id)
     try {
       const database = client.db("orderpizza");
       const order = database.collection("order");
-      const result = await order.find({}).toArray();
+      // const result = await order.find({}).toArray();
+      const result = await order.findOne({
+        orderNumber: parseInt(req.params['id'])});
+
 
 
       console.log("RESULT", result);
@@ -98,8 +102,11 @@ app.get("/customizepizza", (req, res) => {
       console.log("RESULT", result);
       res.json(result);
     } catch (err) {
+      // res.write(err);
       console.log("ERRO AQUI", err);
+
     } finally {
+      // Ensures that the client will close when you finish/error
       await client.close();
     }
   }
