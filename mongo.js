@@ -88,6 +88,25 @@ app.get("/previeworder", (req, res) => {
   // res.send(req.params)
 });
 
+app.get("/customizepizza", (req, res) => {
+  const client = new MongoClient(uri);
+  async function run() {
+    try {
+      const database = client.db("orderpizza");
+      const ingredient = database.collection("ingredient");
+      const result = await ingredient.find({}).toArray();
+      console.log("RESULT", result);
+      res.json(result);
+    } catch (err) {
+      console.log("ERRO AQUI", err);
+    } finally {
+      await client.close();
+    }
+  }
+  run().catch(console.dir);
+  // res.send(req.params)
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
